@@ -46,10 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
       // Disable the submit button after payment
       submitButton.disabled = true;
 
-      // Hide the payment message after a delay (e.g., 5 seconds)
+      // Hide the payment message after a delay (e.g., 60 seconds)
       setTimeout(function () {
         paymentMessage.style.display = "none";
-      }, 5000);
+      }, 60000);
     }
   });
 });
@@ -83,5 +83,5 @@ function makePayment() {
         <p>Hello ${name},</p>
         <p>Your Profile: ${profile.name}</p>
         <p>Profile Passcode: ${profile.passcode}</p>
-        <p>Remember to copy it somewhere.</p>`;
+        <p>Remember to copy it somewhere within 1 minute.</p>`;
 }
