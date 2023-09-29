@@ -8,9 +8,7 @@ After you have made your payment, a message will be shown to the user that you h
 - [Project Structure](#project-structure)
 - [Features](#features)
 - [Usage](#usage)
-
-  - [Making a Payment](#making-a-payment)
-
+- [Making a Payment](#making-a-payment)
 - [License](#license)
 
 ## Project Structure
