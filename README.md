@@ -1,4 +1,4 @@
-# Momo Payment App
+# Netflix Payment WebApp
 
 Welcome to the Momo Payment App, a simple web application for making payments for a netflix subscription service. 
 After you have made your payment, a message will be shown to the user that you has the login information.
@@ -7,7 +7,7 @@ After you have made your payment, a message will be shown to the user that you h
 
 - [Project Structure](#project-structure)
 - [Features](#features)
-- [Usage](#usage)
+
 - [Making a Payment](#making-a-payment)
 - [License](#license)
 
