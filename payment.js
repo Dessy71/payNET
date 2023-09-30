@@ -1,3 +1,5 @@
+// payment.js
+
 document.addEventListener("DOMContentLoaded", function () {
   // Get references to the form, input fields, and submit button
   var paymentForm = document.getElementById("paymentForm");
@@ -5,18 +7,24 @@ document.addEventListener("DOMContentLoaded", function () {
   var phoneInput = document.getElementById("phone");
   var submitButton = document.getElementById("submitButton");
   var paymentMessage = document.getElementById("paymentMessage");
+  var countdownTimer = document.getElementById("timer");
 
   // Function to check if both input fields are non-empty
   function checkInputs() {
-    var nameValue = nameInput.value.trim();
-    var phoneValue = phoneInput.value.trim();
+      var nameValue = nameInput.value.trim();
+      var phoneValue = phoneInput.value.trim();
 
-    // Enable the submit button only if both input fields have values
-    if (nameValue !== "" && phoneValue.match(/^0[0-9]{9}$/)) {
-      submitButton.disabled = false;
-    } else {
-      submitButton.disabled = true;
-    }
+      // Enable the submit button only if both input fields have values
+      if (nameValue !== "" && phoneValue.match(/^0[0-9]{9}$/)) {
+          submitButton.disabled = false;
+      } else {
+          submitButton.disabled = true;
+      }
+  }
+
+  // Function to update the countdown timer
+  function updateTimer(seconds) {
+      countdownTimer.textContent = seconds;
   }
 
   // Add input event listeners to the name and phone input fields
@@ -25,43 +33,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Add a submit event listener to the form
   paymentForm.addEventListener("submit", function (event) {
-    // Prevent the default form submission behavior
-    event.preventDefault();
+      // Prevent the default form submission behavior
+      event.preventDefault();
 
-    // Get the input values
-    var nameValue = nameInput.value.trim();
-    var phoneValue = phoneInput.value.trim();
+      // Get the input values
+      var nameValue = nameInput.value.trim();
+      var phoneValue = phoneInput.value.trim();
 
-    // Check if both inputs are empty or phone is not in the correct format
-    if (nameValue === "" || !phoneValue.match(/^0[0-9]{9}$/)) {
-      alert("Please fill in all fields correctly.");
-    } else {
-      // If both inputs are valid, proceed with the payment
-      makePayment();
-
-      // Clear and reset the input fields
-      nameInput.value = "";
-      phoneInput.value = "";
-
-      // Disable the submit button after payment
-      submitButton.disabled = true;
-
-      // Hide the payment message after a delay (e.g., 60 seconds)
-      setTimeout(function () {
-        paymentMessage.style.display = "none";
-      }, 60000);
-    }
+      // Check if both inputs are empty or phone is not in the correct format
+      if (nameValue === "" || !phoneValue.match(/^0[0-9]{9}$/)) {
+          alert("Please fill in all fields correctly.");
+      } else {
+          // If both inputs are valid, proceed with the payment
+          initiatePayment(nameValue);
+      }
   });
 });
 
 function getRandomProfile() {
   // Define an array of profiles with pre-configured passcodes
   const profiles = [
-    { name: "Dess 1", passcode: "2356" },
-    { name: "Dess 2", passcode: "3456" },
-    { name: "Dess 3", passcode: "4567" },
-    { name: "Dess 4", passcode: "9876" },
-    { name: "Dess 5", passcode: "2345" },
+      { name: "Dess 1", passcode: "2356" },
+      { name: "Dess 2", passcode: "3456" },
+      { name: "Dess 3", passcode: "4567" },
+      { name: "Dess 4", passcode: "9876" },
+      { name: "Dess 5", passcode: "2345" },
   ];
 
   // Randomly select a profile from the array
@@ -69,19 +65,78 @@ function getRandomProfile() {
   return randomProfile;
 }
 
-function makePayment() {
-  // Simulate a successful payment (you can replace this with actual payment processing logic)
-  const name = document.getElementById("name").value;
+// Replace with your Paystack public key
+const paystackPublicKey = 'pk_live_25696ca3cb90de5a5a7d000f5979a104972180ed';
 
-  // Get a randomly selected profile with its pre-configured passcode
-  const profile = getRandomProfile();
+// Function to initiate the payment
+function initiatePayment(nameValue) {
+  // Get the user's phone number
+  const phoneInput = document.getElementById("phone");
+  const phoneValue = phoneInput.value.trim();
 
-  // Display the payment success message including the profile and passcode
-  const paymentMessage = document.getElementById("paymentMessage");
-  paymentMessage.style.display = "block";
-  paymentMessage.innerHTML = `
-        <p>Hello ${name},</p>
-        <p>Your Profile: ${profile.name}</p>
-        <p>Profile Passcode: ${profile.passcode}</p>
-        <p>Remember to copy it somewhere within 1 minute.</p>`;
+  // Check if the phone number is valid (you can add more validation if needed)
+  if (!phoneValue.match(/^0[0-9]{9}$/)) {
+      alert("Please enter a valid phone number.");
+      return;
+  }
+
+  // Initialize Paystack with your public key
+  var handler = PaystackPop.setup({
+      key: paystackPublicKey,
+      email: "desmondantwi07@gmail.com", // Your email address for receiving payment receipts
+      amount: 1, // Amount in kobo (30 cedis = 3000 kobo)
+      currency: "GHS", // Currency code for Ghana Cedis
+      ref: "payment_" + Date.now(), // Generate a unique reference for this payment
+      metadata: {
+          custom_fields: [
+              {
+                  display_name: "Phone Number",
+                  variable_name: "phone_number",
+                  value: phoneValue,
+              },
+          ],
+      },
+      callback: function (response) {
+        // Handle the successful payment response
+        if (response.status === "success") {
+            // Display the payment success message including the profile and passcode
+            const paymentMessage = document.getElementById("paymentMessage");
+            paymentMessage.style.display = "block";
+
+            // Call getRandomProfile to get a random profile for each successful payment
+            const profile = getRandomProfile();
+            paymentMessage.innerHTML = `
+                <p>Hello ${nameValue}, Your payment was successful</p><br>
+                <p>Your logins:</p><br>
+                <p>Email: desmondantwi07@gmail.com</p> <!-- Your email address -->
+                <p>Password: am2321@$</p><br>
+                <p>Your Profile: ${profile.name}</p>
+                <p>Profile Passcode: ${profile.passcode}</p><br>
+                <p>Thank you for subscribing with us!</p><br>`;
+
+            // Start the countdown timer
+            var seconds = 120; // 2 minutes
+            updateTimer(seconds);
+
+            var countdownInterval = setInterval(function () {
+                seconds--;
+
+                if (seconds >= 0) {
+                    updateTimer(seconds);
+                } else {
+                    clearInterval(countdownInterval);
+                    paymentMessage.style.display = "none"; // Hide the message after the timer expires
+                }
+            }, 1000); // Update the timer every second
+        } else {
+            // Handle payment failure here
+            alert("Payment failed. Please try again.");
+        }
+    },
+
+    // ...
+});
+
+// Open the payment dialog
+handler.openIframe();
 }
