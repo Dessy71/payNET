@@ -84,7 +84,7 @@ function initiatePayment(nameValue) {
   var handler = PaystackPop.setup({
       key: paystackPublicKey,
       email: "desmondantwi07@gmail.com", // Your email address for receiving payment receipts
-      amount: 1, // Amount in kobo (30 cedis = 3000 kobo)
+      amount: 3000, // Amount in kobo (30 cedis = 3000 kobo)
       currency: "GHS", // Currency code for Ghana Cedis
       ref: "payment_" + Date.now(), // Generate a unique reference for this payment
       metadata: {
