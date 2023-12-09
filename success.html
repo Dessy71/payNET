@@ -15,7 +15,7 @@
     <div id="paymentDetails">
         <!-- Payment details will be displayed here -->
     </div>
-    <p>Thank you for subscribing with us!</p>
+    <p>Enjoy your subscription!</p>
     <button class="success-button" onclick="redirectToHome()">Go to Home</button>
 </div>
 
@@ -33,9 +33,10 @@
     const paymentDetails = document.getElementById("paymentDetails");
     if (params.name && params.profileName && params.profilePasscode) {
         paymentDetails.innerHTML = `
-            <p>Hello ${decodeURIComponent(params.name)},</p>
-            <p> Your payment was successful</p><br>
-            <p>Your logins:</p>
+    <p style="text-align: center; font-style: italic">Hello <span style="color: green; font-weight: bolder; font-family: monospace; font-size: large;">${decodeURIComponent(params.name)}</span>,</p>
+
+
+             Your logins:
             <table>
             <tr>
               <th>Email</th>
@@ -46,10 +47,8 @@
               <td> am2321@$</td>
             </tr>
           </table><br>
-            <p>Your Profile:</p>
-            
-
-           <table>
+            Your Profile:
+               <table>
             <tr>
               <th>Profile Name</th>
           <td>${decodeURIComponent(params.profileName)}</td>
@@ -58,9 +57,9 @@
               <th>Profile Passcode</th>
               <td>${decodeURIComponent(params.profilePasscode)}</td>
             </tr>
-          </table><br>
+          </table>
             
-            <p>Enjoy your subscription!</p>`;
+            `;
     }
      else {
         paymentDetails.innerHTML = "<p>Invalid payment details</p>";
