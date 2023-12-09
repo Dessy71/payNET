@@ -76,6 +76,6 @@ body::before {
 
 @media screen and (max-width: 480px) {
     .success-container {
-        max-width: 90%;
+        max-width: 50%;
     }
 }
