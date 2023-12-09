@@ -49,11 +49,11 @@ body::before {
 .success-container h1 {
     color: #096b0c;
     margin-top: 1px;
+    text-align: center !important;
 
     @media only screen and (max-width: 480px) {
-        font-size: 20px;
-        font-weight: bolder;
-        font-stretch: ultra-expanded;
+        font-size: 14px;
+       
     }
 }
 
@@ -64,7 +64,7 @@ body::before {
     padding: 5px;
 
     @media only screen and (max-width: 480px) {
-        font-size: 10px !important;
+        font-size: 8px !important;
     }
 }
 
