@@ -82,3 +82,33 @@ body::before {
         font-size: 10px;
     }
 }
+footer {
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    color: #fff;
+    padding: 1px 0;
+    text-align: left;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  footer:hover {
+    background-color: rgba(3, 255, 41, 0.779);
+  }
+  
+  footer a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  footer a[href="https://dessy-portfolio.vercel.app/"] {
+    font-weight: bold;
+    color: rgb(14, 242, 10);
+  }
