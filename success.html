@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Payment Success">
+    <title>Payment Success</title>
+    <link rel="stylesheet" type="text/css" href="success.css">
+</head>
+<body>
+
+<div class="success-container">
+    <h1>Payment Successful</h1>
+    <div id="paymentDetails">
+        <!-- Payment details will be displayed here -->
+    </div>
+    <p>Thank you for subscribing with us!</p>
+    <button class="success-button" onclick="redirectToHome()">Go to Home</button>
+</div>
+
+<script>
+    // Function to get URL parameters
+    function getUrlParams() {
+        const params = new URLSearchParams(window.location.search);
+        return Object.fromEntries(params.entries());
+    }
+
+    // Get URL parameters
+    const params = getUrlParams();
+
+    // Update the content with payment details
+    const paymentDetails = document.getElementById("paymentDetails");
+    if (params.name && params.profileName && params.profilePasscode) {
+        paymentDetails.innerHTML = `
+            <p>Hello ${decodeURIComponent(params.name)},</p>
+            <p> Your payment was successful</p><br>
+            <p>Your logins:</p>
+            <table>
+            <tr>
+              <th>Email</th>
+              <td>desmondantwi07@gmail.com</td>
+            </tr>
+            <tr>
+              <th>Password</th>
+              <td> am2321@$</td>
+            </tr>
+          </table><br>
+            <p>Your Profile:</p>
+            
+
+           <table>
+            <tr>
+              <th>Profile Name</th>
+          <td>${decodeURIComponent(params.profileName)}</td>
+            </tr>
+            <tr>
+              <th>Profile Passcode</th>
+              <td>${decodeURIComponent(params.profilePasscode)}</td>
+            </tr>
+          </table><br>
+            
+            <p>Enjoy your subscription!</p>`;
+    }
+     else {
+        paymentDetails.innerHTML = "<p>Invalid payment details</p>";
+    }
+
+    // Function to redirect to the home page
+    function redirectToHome() {
+        window.location.href = 'index.html'; // Replace 'index.html' with the actual path to your home page
+    }
+</script>
+
+</body>
+</html>

@@ -84,7 +84,7 @@ function initiatePayment(nameValue) {
   var handler = PaystackPop.setup({
       key: paystackPublicKey,
       email: "desmondantwi07@gmail.com", // Your email address for receiving payment receipts
-      amount: 3000, // Amount in kobo (30 cedis = 3000 kobo)
+      amount: 1, // Amount in kobo (30 cedis = 3000 kobo)
       currency: "GHS", // Currency code for Ghana Cedis
       ref: "payment_" + Date.now(), // Generate a unique reference for this payment
       metadata: {
@@ -97,38 +97,17 @@ function initiatePayment(nameValue) {
           ],
       },
       callback: function (response) {
-        // Handle the successful payment response
-        if (response.status === "success") {
-            // Display the payment success message including the profile and passcode
-            const paymentMessage = document.getElementById("paymentMessage");
-            paymentMessage.style.display = "block";
+ // Handle the successful payment response
+if (response.status === "success") {
+    // Call getRandomProfile to get a random profile for each successful payment
+    const profile = getRandomProfile();
 
-            // Call getRandomProfile to get a random profile for each successful payment
-            const profile = getRandomProfile();
-            paymentMessage.innerHTML = `
-                <p>Hello ${nameValue}, Your payment was successful</p><br>
-                <p>Your logins:</p><br>
-                <p>Email: desmondantwi07@gmail.com</p> <!-- Your email address -->
-                <p>Password: am2321@$</p><br>
-                <p>Your Profile: ${profile.name}</p>
-                <p>Profile Passcode: ${profile.passcode}</p><br>
-                <p>Thank you for subscribing with us!</p><br>`;
-
-            // Start the countdown timer
-            var seconds = 120; // 2 minutes
-            updateTimer(seconds);
-
-            var countdownInterval = setInterval(function () {
-                seconds--;
-
-                if (seconds >= 0) {
-                    updateTimer(seconds);
-                } else {
-                    clearInterval(countdownInterval);
-                    paymentMessage.style.display = "none"; // Hide the message after the timer expires
-                }
-            }, 1000); // Update the timer every second
-        } else {
+    // Redirect to the success page with necessary information in the URL
+     // Redirect to the success page with parameters
+    const successUrl = `success.html?name=${encodeURIComponent(nameValue)}&profileName=${encodeURIComponent(profile.name)}&profilePasscode=${encodeURIComponent(profile.passcode)}`;
+    window.location.href = successUrl;
+}
+ else {
             // Handle payment failure here
             alert("Payment failed. Please try again.");
         }
